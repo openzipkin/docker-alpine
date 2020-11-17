@@ -16,5 +16,8 @@
 set -ue
 
 version=${1:-master}
+if [ "${version}" != "master" ]; then
+  export ALPINE_VERSION=${version}
+fi
 
 DOCKER_FILE=Dockerfile build-bin/docker/docker_build openzipkin/alpine:test ${version}

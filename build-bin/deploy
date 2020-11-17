@@ -26,7 +26,6 @@ set -ue
 # contents, even if certain OpenZipkin projects need slight adjustments here.
 
 version=${1:-master}
-
 if [ "${version}" != "master" ]; then
   export ALPINE_VERSION=${version}
 fi

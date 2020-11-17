@@ -19,14 +19,8 @@ FROM scratch as scratch
 
 COPY . /code/
 
-# The builder image can be almost anything, but it might as well be Alpine.
-#
-# Use a fixed version likely to be cached by Google. This will avoid consuming
-# Docker Hub pull quota, which can result in build outages.
-#
-# While tempting, copies are unlikely to work because they often don't republish
-# as multi-arch. For example, https://quay.io/repository/app-sre/alpine is amd64
-FROM alpine:3.12.1 as install
+# See from a previously published version to avoid pulling from Docker Hub (docker.io)
+FROM ghcr.io/openzipkin/alpine:3.12.1 as install
 
 WORKDIR /code
 # Conditions aren't supported in Dockerfile instructions, so we copy source even if it isn't used.
