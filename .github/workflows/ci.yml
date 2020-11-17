@@ -13,12 +13,14 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-20.04  # aka focal, because this is what we use in Travis
+    runs-on: ubuntu-20.04  # newest available distribution, aka focal
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
         with:
-          fetch-depth: 10
+          # license-maven-plugin needs the full history to generate copyright
+          # year range. Ex. 2013-2020. Don't do a shallow clone!
+          fetch-depth: 0
       - name: Cache docker
         uses: actions/cache@v1
         with:
@@ -26,7 +28,8 @@ jobs:
           key: ${{ runner.os }}-docker-${{ hashFiles('**/Dockerfile') }}
           restore-keys: ${{ runner.os }}-docker
       - name: Test
-        # Skips tests on release tags
+        # We run tests on non-tagged pushes on pull requests targeted at the
+        # master branch.
         if: "!startsWith(github.ref, 'refs/tags')"
         run: |
           build-bin/configure_test

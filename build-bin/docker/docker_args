@@ -23,7 +23,11 @@ if ! test -f ${docker_file}; then
   >&2 echo "${docker_file} doesn't exist"
   exit 1
 fi
-docker_args="-f ${docker_file}"
+
+# Add default labels for the day and the SHA we're building from
+docker_args="-f ${docker_file} \
+--label org.opencontainers.image.created=$(date +%Y-%m-%d) \
+--label org.opencontainers.image.revision=$(git rev-parse --short HEAD)"
 
 version=${1:-}
 if [ -n "${version}" ]; then
