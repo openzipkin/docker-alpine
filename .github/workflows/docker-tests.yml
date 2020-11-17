@@ -11,17 +11,14 @@ on:
 
 jobs:
   test:
+    # Don't run on release tags
+    if: !contains(github.ref, 'refs/tags')
     runs-on: ubuntu-20.04 # aka focal, because this is what we use in Travis
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
         with:
           fetch-depth: 10
-      # Remove apt repos that are known to break from time to time.
-      # See https://github.com/actions/virtual-environments/issues/323
-      - name: Remove broken apt repos [Ubuntu]
-        run: |
-          for apt_file in `grep -lr microsoft /etc/apt/sources.list.d/`; do sudo rm $apt_file; done
       - name: Cache docker
         uses: actions/cache@v1
         with:
