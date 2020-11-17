@@ -1,0 +1,70 @@
+# See https://docs.travis-ci.com/user/reference/overview/#for-a-particular-travisyml-configuration
+arch: amd64 # Not arm64 for multi-platform Docker builds (qemu is amd64->arm64, not vice versa)
+os: linux   # required for arch different than amd64
+dist: focal # newest available distribution
+language: bash
+services: docker
+
+# license-maven-plugin needs the full history to generate copyright year range. Ex. 2013-2020
+# Don't do a shallow clone, as it interferes with this.
+git:
+  depth: false
+
+# Prevent test build of a documentation-only change.
+#
+# if: conditions are preferred as they obviate job creation. However, they can only use
+# pre-defined env variables or globals that can be evaluated statically. The other way to skip
+# is to exit early. We do that here to prevent overhead of running tests that only include Markdown
+# (documentation) updates.
+_terminate_if_only_docs: &terminate_if_only_docs |
+  if [ -n "${TRAVIS_COMMIT_RANGE}" ] && ! git diff --name-only "${TRAVIS_COMMIT_RANGE}" -- | grep -qv '\.md$'; then
+    echo "Stopping job as changes only affect documentation (ex. README.md)"
+    travis_terminate 0
+  fi
+
+jobs:
+  include:
+    - stage: test
+      # We run tests on non-tagged pushes to master that aren't a commit made by the release plugin
+      # We also run tests on pull requests targeted at the master branch.
+      if: branch = master AND tag IS blank AND type IN (push, pull_request)
+      name: Run unit and integration tests
+      before_install: *terminate_if_only_docs
+      # To save time and build credits, we continue to deploy after a secure commit to master.
+      # See https://docs-staging.travis-ci.com/user/environment-variables/#convenience-variables
+      install: |
+        if [ "${TRAVIS_SECURE_ENV_VARS}" = "true" ] && [ "${TRAVIS_PULL_REQUEST}" = "false" ]; then
+          export SHOULD_DEPLOY=true
+          ./build-bin/configure_deploy
+        else
+          export SHOULD_DEPLOY=false
+          ./build-bin/configure_test
+        fi
+      script:
+        - ./build-bin/test || travis_terminate 1
+        - if [ "${SHOULD_DEPLOY}" != "true" ]; then travis_terminate 0; fi
+        - travis_wait ./build-bin/deploy master
+    - stage: deploy
+      if: tag =~ /^[0-9]+\.[0-9]+\.[0-9]+$/ AND type = push AND env(GH_TOKEN) IS present
+      name: Deploy a release
+      install: ./build-bin/configure_deploy
+      script: ./build-bin/deploy ${TRAVIS_TAG}
+
+notifications:
+  webhooks:
+    urls:
+      - https://webhooks.gitter.im/e/ead3c37d57527214e9f2
+      - https://webhooks.gitter.im/e/9f1ee2f315d32956f8d6
+    on_success: change
+    on_failure: always
+
+# Secure variables needed for release and publication
+#
+# When Travis, add to https://travis-ci.com/github/openzipkin/${REPO}/settings
+#
+# GH_TOKEN=XXX-https://github.com/settings/tokens-XXX
+#   - writes to GHCR
+#   - needs repo:status, public_repo and if Docker write:packages, delete:packages
+# GH_USER=user_that_created_GH_TOKEN
+#   - login like this: echo "$GH_TOKEN"| docker login ghcr.io -u "$GH_USER" --password-stdin
+
