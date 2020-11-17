@@ -10,9 +10,7 @@ on:
     paths-ignore: '**/*.md'
 
 jobs:
-  test:
-    # Don't run on release tags
-    if: !contains(github.ref, 'refs/tags')
+  build:
     runs-on: ubuntu-20.04 # aka focal, because this is what we use in Travis
     steps:
       - name: Checkout Repository
@@ -25,7 +23,9 @@ jobs:
           path: ~/.docker
           key: ${{ runner.os }}-docker-${{ hashFiles('**/Dockerfile') }}
           restore-keys: ${{ runner.os }}-docker
-      - name: Configure test
-        run: build-bin/configure_test
       - name: Test
-        run: build-bin/test
+        # Skip tests on release tag
+        if: !contains(github.ref, 'refs/tags')
+        run:
+         - build-bin/configure_test
+         - build-bin/test
