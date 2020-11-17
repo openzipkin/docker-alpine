@@ -13,7 +13,7 @@
 # the License.
 #
 
-set -eux
+set -eu
 
 # This downloads and extracts the indicated version alpine-minirootfs into the current directory.
 
@@ -41,4 +41,5 @@ case ${arch} in
     exit 1;
 esac
 
+echo "Extracting alpine-minirootfs v${full_version} for ${arch} architecture"
 wget -qO- https://dl-cdn.alpinelinux.org/alpine/v${version}/releases/${arch}/alpine-minirootfs-${version}.${patch}-${arch}.tar.gz| tar xz
