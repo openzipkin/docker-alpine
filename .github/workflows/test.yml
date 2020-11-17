@@ -1,6 +1,6 @@
 # yamllint --format github .github/workflows/test.yml
 ---
-name: Run unit and integration tests
+name: test
 
 # We don't test documentation-only commits.
 on:
@@ -15,7 +15,7 @@ on:
     paths-ignore: '**/*.md'
 
 jobs:
-  build:
+  test:
     runs-on: ubuntu-20.04  # newest available distribution, aka focal
     steps:
       - name: Checkout Repository

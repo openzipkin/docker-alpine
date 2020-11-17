@@ -1,5 +1,5 @@
 [![Gitter chat](http://img.shields.io/badge/gitter-join%20chat%20%E2%86%92-brightgreen.svg)](https://gitter.im/openzipkin/zipkin)
-[![Build Status](https://travis-ci.com/openzipkin/docker-alpine.svg?branch=master)](https://travis-ci.com/openzipkin/docker-alpine)
+![Build Status](https://github.com/openzipkin/docker-alpine/workflows/test/badge.svg)
 
 `ghcr.io/openzipkin/alpine` is a minimal [Alpine Linux](https://alpinelinux.org) image.
 

@@ -60,18 +60,6 @@ done
 # plaforms to eventually push to the registry
 docker_platforms=${DOCKER_PLATFORMS:-linux/amd64,linux/arm64}
 
-# This can be less manual in the future, for example checking buildx to see what it can do.
-arch=${ARCH:-$(uname -m)}
-case ${arch} in
-  x86_64* )
-    ;;
-  amd64* )
-    ;;
-  * )
-    >&2 echo Pushing docker_platforms ${docker_platforms} with arch ${arch} is not yet supported.
-    exit 1
-esac
-
 echo "Will push the following tags with platform ${docker_platforms}:${tags}\n"
 
 docker_args=$($(dirname "$0")/docker_args ${version})

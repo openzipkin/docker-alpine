@@ -22,8 +22,8 @@ set -ue
 #    * skip pull requests
 #  * build-bin/configure_deploy must be called before invoking this.
 #
-# This script primarily helps `.travis.yml` and `RELEASE.md` contain nearly the same contents, even
-# if certain OpenZipkin projects need slight adjustments here.
+# This script primarily helps `.travis.yml`, "deploy.yml" and `RELEASE.md` contain nearly the same
+# contents, even if certain OpenZipkin projects need slight adjustments here.
 
 version=${1:-master}
 

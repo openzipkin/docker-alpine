@@ -17,7 +17,7 @@ set -ue
 
 # This script sets up anything needed for `./deploy`. Do not assume `configure_test` was called.
 #
-# This script primarily helps `.travis.yml` and `RELEASE.md` contain nearly the same contents, even
-# if certain OpenZipkin projects need slight adjustments here.
+# This script primarily helps `.travis.yml`, "deploy.yml" and `RELEASE.md` contain nearly the same
+# contents, even if certain OpenZipkin projects need slight adjustments here.
 
 build-bin/docker/configure_docker_push

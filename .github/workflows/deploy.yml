@@ -1,6 +1,6 @@
 # yamllint --format github .github/workflows/deploy.yml
 ---
-name: Deploy master and release versions
+name: deploy
 
 # We deploy on master and release versions, regardless of if the commit is
 # documentation-only or not.
@@ -10,7 +10,7 @@ on:
     branches: master
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-20.04  # newest available distribution, aka focal
     steps:
       - name: Checkout Repository
