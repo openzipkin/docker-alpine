@@ -1,12 +1,15 @@
-# yamllint --format github .github/workflows/ci.yml
+# yamllint --format github .github/workflows/test.yml
 ---
-name: Continuous Integration
+name: Run unit and integration tests
 
-# Trigger on pushes or pull requests to the master branch, but not doc-only
+# We don't test documentation-only commits.
 on:
+  # We run tests on non-tagged pushes to master that aren't a commit made by the release plugin
   push:
+    tags: ''
     branches: master
     paths-ignore: '**/*.md'
+  # We also run tests on pull requests targeted at the master branch.
   pull_request:
     branches: master
     paths-ignore: '**/*.md'
@@ -22,15 +25,12 @@ jobs:
           # year range. Ex. 2013-2020. Don't do a shallow clone!
           fetch-depth: 0
       - name: Cache docker
-        uses: actions/cache@v1
+        uses: actions/cache@v2
         with:
           path: ~/.docker
           key: ${{ runner.os }}-docker-${{ hashFiles('**/Dockerfile') }}
           restore-keys: ${{ runner.os }}-docker
       - name: Test
-        # We run tests on non-tagged pushes on pull requests targeted at the
-        # master branch.
-        if: "!startsWith(github.ref, 'refs/tags')"
         run: |
           build-bin/configure_test
           build-bin/test

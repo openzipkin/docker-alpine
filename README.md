@@ -27,4 +27,4 @@ For example, given the following output from `docker run --rm openzipkin/alpine:
 ```
 
 To release the image, push a tag named the same as the arg to `build-bin/build` (ex `3.12.1`).
-This will trigger a [Travis CI](https://travis-ci.com/openzipkin/docker-alpine) job to push the image.
+This will trigger a [GitHub Actions](https://github.com/openzipkin/docker-alpine/actions) job to push the image.
