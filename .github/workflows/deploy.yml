@@ -1,4 +1,4 @@
-# yamllint --format github .github/workflows/test.yml
+# yamllint --format github .github/workflows/deploy.yml
 ---
 name: Deploy master and release versions
 
@@ -27,7 +27,7 @@ jobs:
           restore-keys: ${{ runner.os }}-docker
       - name: Configure Deploy
         run: build-bin/configure_deploy
-        with:
+        env:
           # GH_USER=<user that created GH_TOKEN>
           GH_USER: ${{ secrets.GH_USER }}
           # GH_TOKEN=hex_token_value
