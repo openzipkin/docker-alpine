@@ -1,5 +1,5 @@
 #
-# Copyright 2020 The OpenZipkin Authors
+# Copyright 2015-2020 The OpenZipkin Authors
 #
 # Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
 # in compliance with the License. You may obtain a copy of the License at
@@ -35,8 +35,8 @@ COPY --from=scratch /code/ .
 # Alpine's minirootfs is mirrored and only 5MB. Build on demand instead of consuming docker.io pulls
 WORKDIR /install
 # Use current version here: https://alpinelinux.org/downloads/
-ARG version=3.12.1
-ENV ALPINE_VERSION=$version
+ARG alpine_version=3.12.1
+ENV ALPINE_VERSION=$alpine_version
 RUN /code/alpine_minirootfs $ALPINE_VERSION
 
 # Define base layer, notably not adding labels always overridden

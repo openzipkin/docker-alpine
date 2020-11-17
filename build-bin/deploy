@@ -27,6 +27,10 @@ set -ue
 
 version=${1:-master}
 
+if [ "${version}" != "master" ]; then
+  export ALPINE_VERSION=${version}
+fi
+
 # Base layers are not pushed to Docker Hub (docker.io)
 export DOCKER_RELEASE_REPOS=ghcr.io
 export DOCKER_FILE=Dockerfile

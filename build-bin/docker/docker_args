@@ -41,6 +41,12 @@ if [ -n "${DOCKER_TARGET}" ]; then
   docker_args="${docker_args} --target ${DOCKER_TARGET}"
 fi
 
+# When non-empty, becomes the build-arg alpine_version. Ex. "3.12.1"
+# Used to align base layers from https://github.com/orgs/openzipkin/packages/container/package/alpine
+if [ -n "${ALPINE_VERSION}" ]; then
+  docker_args="${docker_args} --build-arg alpine_version=${ALPINE_VERSION}"
+fi
+
 # When non-empty, becomes the build-arg java_version. Ex. "15.0.1_p9"
 # Used to align base layers from https://github.com/orgs/openzipkin/packages/container/package/java
 if [ -n "${JAVA_VERSION}" ]; then
