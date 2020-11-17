@@ -28,7 +28,7 @@ jobs:
       - name: Configure Deploy
         run: build-bin/configure_deploy
         with:
-          # GH_USER=user_that_created_GH_TOKEN
+          # GH_USER=<user that created GH_TOKEN>
           GH_USER: ${{ secrets.GH_USER }}
           # GH_TOKEN=XXX-https://github.com/settings/tokens-XXX
           #   - writes to ghcr.io
