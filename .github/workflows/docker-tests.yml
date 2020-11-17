@@ -24,8 +24,7 @@ jobs:
           key: ${{ runner.os }}-docker-${{ hashFiles('**/Dockerfile') }}
           restore-keys: ${{ runner.os }}-docker
       - name: Test
-        # Skip tests on release tag
-        if: !contains(github.ref, 'refs/tags')
+        if: !contains(github.ref, 'refs/tags') # Skip tests on release tag
         run:
          - build-bin/configure_test
          - build-bin/test
