@@ -1,6 +1,8 @@
-name: Continuous Build Docker
+# yamllint --format github .github/workflows/ci.yml
+---
+name: Continuous Integration
 
-# Trigger on pushes or pull requests to the master branch, but not for documentation-only updates.
+# Trigger on pushes or pull requests to the master branch, but not doc-only
 on:
   push:
     branches: master
@@ -11,7 +13,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-20.04 # aka focal, because this is what we use in Travis
+    runs-on: ubuntu-20.04  # aka focal, because this is what we use in Travis
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
@@ -25,7 +27,7 @@ jobs:
           restore-keys: ${{ runner.os }}-docker
       - name: Test
         # Skips tests on release tags
-        if: !startsWith(github.ref, 'refs/tags')
+        if: "!startsWith(github.ref, 'refs/tags')"
         run: |
-         build-bin/configure_test
-         build-bin/test
+          build-bin/configure_test
+          build-bin/test
