@@ -28,7 +28,13 @@ COPY --from=scratch /code/ .
 
 # Alpine's minirootfs is mirrored and only 5MB. Build on demand instead of consuming docker.io pulls
 WORKDIR /install
-# Use current version here: https://alpinelinux.org/downloads/
+
+# alpine_version is hard-coded here to allow the following to work:
+#  * `docker build https://github.com/openzipkin/docker-alpine.git`
+#
+# When updating, update the README and both alpine_version ARGs
+#  * Use current version from https://alpinelinux.org/downloads/
+#  * ARGs repeat because Dockerfile ARGs are layer specific
 ARG alpine_version=3.12.1
 ENV ALPINE_VERSION=$alpine_version
 RUN /code/alpine_minirootfs $ALPINE_VERSION
@@ -38,6 +44,8 @@ FROM scratch as alpine
 ARG maintainer="OpenZipkin https://gitter.im/openzipkin/zipkin"
 LABEL maintainer=$maintainer
 LABEL org.opencontainers.image.authors=$maintainer
+ARG alpine_version=3.12.1
+LABEL alpine-version=$alpine_version
 
 COPY --from=install /install /
 
@@ -46,19 +54,26 @@ ENV LANG en_US.UTF-8
 ENV LANGUAGE en_US:en
 ENV LC_ALL en_US.UTF-8
 
+# RUN, COPY, and ADD instructions create layers. While layer count is less important in modern
+# Docker, it doesn't help performance to intentionally make multiple RUN layers in a base image.
+RUN \
+#
 # Java relies on /etc/nsswitch.conf. Put host files first or InetAddress.getLocalHost
 # will throw UnknownHostException as the local hostname isn't in DNS.
-RUN echo 'hosts: files mdns4_minimal [NOTFOUND=return] dns mdns4' >> /etc/nsswitch.conf
-
+echo 'hosts: files mdns4_minimal [NOTFOUND=return] dns mdns4' >> /etc/nsswitch.conf && \
+#
 # Later installations may require more recent versions of packages such as nodejs
-RUN for repository in main testing community; do \
-      repository_url=https://dl-cdn.alpinelinux.org/alpine/edge/${repository} && \
-      grep -qF -- $repository_url /etc/apk/repositories || echo $repository_url >> /etc/apk/repositories; \
-    done
-
+for repository in main testing community; do \
+  repository_url=https://dl-cdn.alpinelinux.org/alpine/edge/${repository} && \
+  grep -qF -- ${repository_url} /etc/apk/repositories || echo ${repository_url} >> /etc/apk/repositories; \
+done && \
+#
 # Finalize install:
 # * java-cacerts: implicitly gets normal ca-certs used outside Java (this does not depend on java)
 # * libc6-compat: BoringSSL for Netty per https://github.com/grpc/grpc-java/blob/master/SECURITY.md#netty
-RUN apk add --no-cache java-cacerts libc6-compat
+apk add --no-cache java-cacerts libc6-compat && \
+#
+# Typically, only amd64 is tested in CI: Run a command to ensure binaries match current arch.
+ldd /lib/libz.so.1
 
 ENTRYPOINT ["/bin/sh"]
