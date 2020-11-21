@@ -35,6 +35,9 @@ case ${arch} in
   aarch64* )
     arch=arm64
     ;;
+  s390x* )
+    arch=s390x
+    ;;
   * )
     >&2 echo "Unsupported arch: ${arch}"
     exit 1;
