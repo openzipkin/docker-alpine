@@ -15,7 +15,7 @@
 # We copy files from the context into a scratch container first to avoid a problem where docker and
 # docker-compose don't share layer hashes https://github.com/docker/compose/issues/883 normally.
 # COPY --from= works around the issue.
-FROM scratch as scratch
+FROM scratch as code
 
 COPY . /code/
 
@@ -24,7 +24,7 @@ FROM ghcr.io/openzipkin/alpine:3.12.1 as install
 
 WORKDIR /code
 # Conditions aren't supported in Dockerfile instructions, so we copy source even if it isn't used.
-COPY --from=scratch /code/ .
+COPY --from=code /code/ .
 
 # Alpine's minirootfs is mirrored and only 5MB. Build on demand instead of consuming docker.io pulls
 WORKDIR /install
