@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# Copyright 2019-2020 The OpenZipkin Authors
+# Copyright 2020 The OpenZipkin Authors
 #
 # Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
 # in compliance with the License. You may obtain a copy of the License at
@@ -18,6 +18,7 @@
 # When a release, and DOCKER_RELEASE_REPOS is unset they also push to Docker Hub (docker.io).
 #
 # Note: In CI, `configure_docker_push` must be called before invoking this.
+
 set -ue
 
 docker_image=${1?docker_image is required, notably without a tag. Ex openzipkin/zipkin}
@@ -58,14 +59,13 @@ for repo in ${docker_repos}; do
 done
 
 # plaforms to eventually push to the registry
-docker_platforms=${DOCKER_PLATFORMS:-linux/amd64,linux/arm64,linux/s390x}
+docker_platforms=${DOCKER_PLATFORMS:-linux/amd64,linux/arm64}
 
 echo "Will push the following tags with platform ${docker_platforms}:${tags}\n"
 
 docker_args=$($(dirname "$0")/docker_args ${version})
 
-# --pull ensures that pushed builds don't depend on cached layers, for example, if the same image is re-pushed.
-docker_push="docker buildx build --progress plain --platform=${docker_platforms} ${docker_args} . --pull --output=type=registry"
+docker_push="docker buildx build --progress plain --platform=${docker_platforms} ${docker_args} . --push"
 
 for tag in $(echo ${tags}|xargs); do
   echo "Pushing tag ${tag}..."
