@@ -6,7 +6,7 @@ CA certs and libc6-compat.
 
 GitHub Container Registry: [ghcr.io/openzipkin/alpine](https://github.com/orgs/openzipkin/packages/container/package/alpine) includes:
  * `master` tag: latest commit
- * `N.M.L` tag: release corresponding to a [Current Alpine Version](https://alpinelinux.org/downloads/)
+ * `MAJOR.MINOR.PATCH` tag: release corresponding to a [Current Alpine Version](https://alpinelinux.org/downloads/)
 
 ## Using this image
 This is an internal base layer primarily used in [docker-java](https://github.com/openzipkin/docker-java).
