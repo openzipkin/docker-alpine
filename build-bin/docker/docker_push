@@ -89,7 +89,7 @@ for tag in $(echo ${tags} | xargs); do
   docker manifest create ${tag} ${manifest_tags}
 
   for manifest_tag in ${manifest_tags}; do
-    docker_arch=$(echo ${arch_tag} | cut -f2 -d: | cut -f2 -d-)
+    docker_arch=$(echo ${manifest_tag} | cut -f2 -d: | cut -f2 -d-)
     docker manifest annotate ${tag} ${manifest_tag} --os linux --arch ${docker_arch}
   done
 
