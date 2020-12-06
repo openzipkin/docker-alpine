@@ -59,7 +59,7 @@ for repo in ${docker_repos}; do
 done
 
 # plaforms to eventually push to the registry
-docker_platforms=${DOCKER_PLATFORMS:-linux/amd64,linux/arm64}
+docker_platforms=${DOCKER_PLATFORMS:-linux/amd64,linux/arm64,linux/s390x}
 
 echo "Will push the following tags with platform ${docker_platforms}:${tags}\n"
 
