@@ -20,6 +20,7 @@ FROM scratch as code
 COPY . /code/
 
 # See from a previously published version to avoid pulling from Docker Hub (docker.io)
+# This version is only used to install the real version
 FROM ghcr.io/openzipkin/alpine:3.12.1 as install
 
 WORKDIR /code
@@ -35,7 +36,7 @@ WORKDIR /install
 # When updating, update the README and both alpine_version ARGs
 #  * Use current version from https://alpinelinux.org/downloads/
 #  * ARGs repeat because Dockerfile ARGs are layer specific
-ARG alpine_version=3.12.1
+ARG alpine_version=3.12.3
 ENV ALPINE_VERSION=$alpine_version
 RUN /code/alpine_minirootfs $ALPINE_VERSION
 
@@ -44,7 +45,7 @@ FROM scratch as alpine
 ARG maintainer="OpenZipkin https://gitter.im/openzipkin/zipkin"
 LABEL maintainer=$maintainer
 LABEL org.opencontainers.image.authors=$maintainer
-ARG alpine_version=3.12.1
+ARG alpine_version=3.12.3
 LABEL alpine-version=$alpine_version
 
 COPY --from=install /install /
