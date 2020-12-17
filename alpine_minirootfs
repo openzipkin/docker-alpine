@@ -17,7 +17,7 @@ set -eu
 
 # This downloads and extracts the indicated version alpine-minirootfs into the current directory.
 
-full_version=${1?full_version ex 3.12.1}
+full_version=${1?full_version ex 3.12.3}
 version=$(echo "${full_version}" | sed -En "s/^([0-9]+\.[0-9]+)\.[0-9]+$/\1/p")
 patch=$(echo "${full_version}" | cut -f3 -d.)
 
