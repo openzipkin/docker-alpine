@@ -36,7 +36,7 @@ WORKDIR /install
 # When updating, update the README and both alpine_version ARGs
 #  * Use current version from https://alpinelinux.org/downloads/
 #  * ARGs repeat because Dockerfile ARGs are layer specific
-ARG alpine_version=3.14.2
+ARG alpine_version=3.14.3
 ENV ALPINE_VERSION=$alpine_version
 RUN /code/alpine_minirootfs $ALPINE_VERSION
 
@@ -45,7 +45,7 @@ FROM scratch as alpine
 ARG maintainer="OpenZipkin https://gitter.im/openzipkin/zipkin"
 LABEL maintainer=$maintainer
 LABEL org.opencontainers.image.authors=$maintainer
-ARG alpine_version=3.14.2
+ARG alpine_version=3.14.3
 LABEL alpine-version=$alpine_version
 
 COPY --from=install /install /
