@@ -27,7 +27,7 @@ Build the `Dockerfile` using the current version from https://alpinelinux.org/do
 Next, verify the built image matches that version:
 ```bash
 docker run --rm openzipkin/alpine:test -c 'cat /etc/alpine-release'
-3.12.3
+3.14.3
 ```
 
 To release the image, push a tag matching the arg to `build-bin/build` (ex `3.14.3`).
