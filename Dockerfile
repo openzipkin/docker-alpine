@@ -12,6 +12,14 @@
 # the License.
 #
 
+# alpine_version is hard-coded here to allow the following to work:
+#  * `docker build https://github.com/openzipkin/docker-alpine.git`
+#
+# When updating, update the README and the alpine_version ARG
+#  * Use current version from https://alpinelinux.org/downloads/
+#  * ARGs repeat because Dockerfile ARGs are layer specific but will reuse the value defined here.
+ARG alpine_version=3.14.3
+
 # We copy files from the context into a scratch container first to avoid a problem where docker and
 # docker-compose don't share layer hashes https://github.com/docker/compose/issues/883 normally.
 # COPY --from= works around the issue.
@@ -30,13 +38,7 @@ COPY --from=code /code/ .
 # Alpine's minirootfs is mirrored and only 5MB. Build on demand instead of consuming docker.io pulls
 WORKDIR /install
 
-# alpine_version is hard-coded here to allow the following to work:
-#  * `docker build https://github.com/openzipkin/docker-alpine.git`
-#
-# When updating, update the README and both alpine_version ARGs
-#  * Use current version from https://alpinelinux.org/downloads/
-#  * ARGs repeat because Dockerfile ARGs are layer specific
-ARG alpine_version=3.14.2
+ARG alpine_version
 ENV ALPINE_VERSION=$alpine_version
 RUN /code/alpine_minirootfs $ALPINE_VERSION
 
@@ -45,7 +47,7 @@ FROM scratch as alpine
 ARG maintainer="OpenZipkin https://gitter.im/openzipkin/zipkin"
 LABEL maintainer=$maintainer
 LABEL org.opencontainers.image.authors=$maintainer
-ARG alpine_version=3.14.2
+ARG alpine_version
 LABEL alpine-version=$alpine_version
 
 COPY --from=install /install /
