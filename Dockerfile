@@ -18,7 +18,7 @@
 # When updating, update the README and the alpine_version ARG
 #  * Use current version from https://alpinelinux.org/downloads/
 #  * ARGs repeat because Dockerfile ARGs are layer specific but will reuse the value defined here.
-ARG alpine_version=3.14.3
+ARG alpine_version=3.15.3
 
 # We copy files from the context into a scratch container first to avoid a problem where docker and
 # docker-compose don't share layer hashes https://github.com/docker/compose/issues/883 normally.
@@ -60,23 +60,23 @@ ENV LC_ALL en_US.UTF-8
 # RUN, COPY, and ADD instructions create layers. While layer count is less important in modern
 # Docker, it doesn't help performance to intentionally make multiple RUN layers in a base image.
 RUN \
-#
-# Java relies on /etc/nsswitch.conf. Put host files first or InetAddress.getLocalHost
-# will throw UnknownHostException as the local hostname isn't in DNS.
-echo 'hosts: files mdns4_minimal [NOTFOUND=return] dns mdns4' >> /etc/nsswitch.conf && \
-#
-# Later installations may require more recent versions of packages such as nodejs
-for repository in main testing community; do \
+  #
+  # Java relies on /etc/nsswitch.conf. Put host files first or InetAddress.getLocalHost
+  # will throw UnknownHostException as the local hostname isn't in DNS.
+  echo 'hosts: files mdns4_minimal [NOTFOUND=return] dns mdns4' >> /etc/nsswitch.conf && \
+  #
+  # Later installations may require more recent versions of packages such as nodejs
+  for repository in main testing community; do \
   repository_url=https://dl-cdn.alpinelinux.org/alpine/edge/${repository} && \
   grep -qF -- ${repository_url} /etc/apk/repositories || echo ${repository_url} >> /etc/apk/repositories; \
-done && \
-#
-# Finalize install:
-# * java-cacerts: implicitly gets normal ca-certs used outside Java (this does not depend on java)
-# * libc6-compat: BoringSSL for Netty per https://github.com/grpc/grpc-java/blob/master/SECURITY.md#netty
-apk add --no-cache java-cacerts libc6-compat && \
-#
-# Typically, only amd64 is tested in CI: Run a command to ensure binaries match current arch.
-ldd /lib/libz.so.1
+  done && \
+  #
+  # Finalize install:
+  # * java-cacerts: implicitly gets normal ca-certs used outside Java (this does not depend on java)
+  # * libc6-compat: BoringSSL for Netty per https://github.com/grpc/grpc-java/blob/master/SECURITY.md#netty
+  apk add --no-cache java-cacerts libc6-compat && \
+  #
+  # Typically, only amd64 is tested in CI: Run a command to ensure binaries match current arch.
+  ldd /lib/libz.so.1
 
 ENTRYPOINT ["/bin/sh"]
