@@ -29,7 +29,7 @@ COPY . /code/
 
 # See from a previously published version to avoid pulling from Docker Hub (docker.io)
 # This version is only used to install the real version
-FROM alpine:3.15.3 as install
+FROM ghcr.io/openzipkin/alpine:3.15.3 as install
 
 WORKDIR /code
 # Conditions aren't supported in Dockerfile instructions, so we copy source even if it isn't used.
