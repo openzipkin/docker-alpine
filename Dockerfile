@@ -18,7 +18,7 @@
 # When updating, update the README and the alpine_version ARG
 #  * Use current version from https://alpinelinux.org/downloads/
 #  * ARGs repeat because Dockerfile ARGs are layer specific but will reuse the value defined here.
-ARG alpine_version=3.16.0
+ARG alpine_version=3.16.2
 
 # We copy files from the context into a scratch container first to avoid a problem where docker and
 # docker-compose don't share layer hashes https://github.com/docker/compose/issues/883 normally.
@@ -29,7 +29,7 @@ COPY . /code/
 
 # See from a previously published version to avoid pulling from Docker Hub (docker.io)
 # This version is only used to install the real version
-FROM ghcr.io/openzipkin/alpine:3.15.3 as install
+FROM ghcr.io/openzipkin/alpine:3.16.0 as install
 
 WORKDIR /code
 # Conditions aren't supported in Dockerfile instructions, so we copy source even if it isn't used.
@@ -77,7 +77,7 @@ RUN \
   # * libcrypto1.1, libssl1.1: Fix CVE-2022-2097
   # * busybox: Fix CVE-2022-30065
   # * ssl_client: Fix CVE-2022-30065
-  apk add --no-cache java-cacerts libc6-compat libcrypto1.1=1.1.1q-r0 libssl1.1=1.1.1q-r0 busybox=1.35.0-r18 ssl_client=1.35.0-r18 && \
+  apk add --no-cache java-cacerts libc6-compat libcrypto1.1=1.1.1q-r3 libssl1.1=1.1.1q-r3 busybox=1.35.0-r22 ssl_client=1.35.0-r22 && \
   #
   # Typically, only amd64 is tested in CI: Run a command to ensure binaries match current arch.
   ldd /lib/libz.so.1
