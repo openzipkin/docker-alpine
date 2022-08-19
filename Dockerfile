@@ -1,5 +1,5 @@
 #
-# Copyright 2015-2020 The OpenZipkin Authors
+# Copyright 2015-2022 The OpenZipkin Authors
 #
 # Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
 # in compliance with the License. You may obtain a copy of the License at
@@ -77,7 +77,7 @@ RUN \
   # * libcrypto1.1, libssl1.1: Fix CVE-2022-2097
   # * busybox: Fix CVE-2022-30065
   # * ssl_client: Fix CVE-2022-30065
-  apk add --no-cache java-cacerts libc6-compat libcrypto1.1=1.1.1q-r3 libssl1.1=1.1.1q-r3 busybox=1.35.0-r22 ssl_client=1.35.0-r22 && \
+  apk add --no-cache java-cacerts libc6-compat libcrypto1.1=1.1.1q-r0 libssl1.1=1.1.1q-r0 busybox=1.35.0-r17 ssl_client=1.35.0-r17 && \
   #
   # Typically, only amd64 is tested in CI: Run a command to ensure binaries match current arch.
   ldd /lib/libz.so.1
