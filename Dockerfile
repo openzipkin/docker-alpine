@@ -77,7 +77,7 @@ RUN \
   # * libcrypto1.1, libssl1.1: Fix CVE-2022-2097
   # * busybox: Fix CVE-2022-30065
   # * ssl_client: Fix CVE-2022-30065
-  apk add --no-cache java-cacerts libc6-compat libcrypto1.1=1.1.1q-r0 libssl1.1=1.1.1q-r0 busybox=1.35.0-r17 ssl_client=1.35.0-r17 && \
+  apk add --no-cache java-cacerts ca-certificates libc6-compat libcrypto1.1=1.1.1q-r3 libssl1.1=1.1.1q-r3 busybox=1.35.0-r22 ssl_client=1.35.0-r22 && \
   #
   # Typically, only amd64 is tested in CI: Run a command to ensure binaries match current arch.
   ldd /lib/libz.so.1
