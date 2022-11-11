@@ -29,7 +29,7 @@ COPY . /code/
 
 # See from a previously published version to avoid pulling from Docker Hub (docker.io)
 # This version is only used to install the real version
-FROM ghcr.io/openzipkin/alpine:3.16.0 as install
+FROM ghcr.io/openzipkin/alpine:3.16.2 as install
 
 WORKDIR /code
 # Conditions aren't supported in Dockerfile instructions, so we copy source even if it isn't used.
@@ -74,11 +74,11 @@ RUN \
   # Finalize install:
   # * java-cacerts: implicitly gets normal ca-certs used outside Java (this does not depend on java)
   # * libc6-compat: BoringSSL for Netty per https://github.com/grpc/grpc-java/blob/master/SECURITY.md#netty
-  # * libcrypto1.1, libssl1.1: Fix CVE-2022-2097
-  # * busybox: Fix CVE-2022-30065
-  # * ssl_client: Fix CVE-2022-30065
-  apk add --no-cache java-cacerts ca-certificates libc6-compat libcrypto1.1=1.1.1q-r0 libssl1.1=1.1.1q-r0 busybox=1.35.0-r17 ssl_client=1.35.0-r17 && \
-  #
+  apk add --no-cache java-cacerts ca-certificates libc6-compat && \
+  # * upgrade available to fix CVEs CVE-2021-4044, CVE-2022-0778, CVE-2022-1473, CVE-2022-3358, CVE-2022-3602, CVE-2022-3786
+  #   currently there are lots of dependencies on libcrypto1.1 and necessary fixes require moving to libcrypto3.
+  #   note: this is temporary and next Alpine after 3.16.2 should have necessary fixes in place.
+  apk upgrade --available --no-cache && \
   # Typically, only amd64 is tested in CI: Run a command to ensure binaries match current arch.
   ldd /lib/libz.so.1
 
