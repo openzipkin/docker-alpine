@@ -18,7 +18,7 @@
 # When updating, update the README and the alpine_version ARG
 #  * Use current version from https://alpinelinux.org/downloads/
 #  * ARGs repeat because Dockerfile ARGs are layer specific but will reuse the value defined here.
-ARG alpine_version=3.18.0
+ARG alpine_version=3.18.2
 
 # We copy files from the context into a scratch container first to avoid a problem where docker and
 # docker-compose don't share layer hashes https://github.com/docker/compose/issues/883 normally.
