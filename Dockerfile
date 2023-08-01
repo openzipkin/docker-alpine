@@ -75,6 +75,8 @@ RUN \
   # * java-cacerts: implicitly gets normal ca-certs used outside Java (this does not depend on java)
   # * libc6-compat: BoringSSL for Netty per https://github.com/grpc/grpc-java/blob/master/SECURITY.md#netty
   apk add --no-cache java-cacerts ca-certificates libc6-compat && \
+  # Force install versions that don't have CVE-2023-2975. This can be removed on future versions.
+  apk add --no-cache libcrypto3=3.1.1-r3 libssl3=3.1.1-r3 && \
   # Typically, only amd64 is tested in CI: Run a command to ensure binaries match current arch.
   ldd /lib/libz.so.1
 
