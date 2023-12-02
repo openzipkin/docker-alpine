@@ -18,7 +18,7 @@
 # When updating, update the README and the alpine_version ARG
 #  * Use current version from https://alpinelinux.org/downloads/
 #  * ARGs repeat because Dockerfile ARGs are layer specific but will reuse the value defined here.
-ARG alpine_version=3.18.2
+ARG alpine_version=3.18.5
 
 # We copy files from the context into a scratch container first to avoid a problem where docker and
 # docker-compose don't share layer hashes https://github.com/docker/compose/issues/883 normally.
@@ -75,8 +75,6 @@ RUN \
   # * java-cacerts: implicitly gets normal ca-certs used outside Java (this does not depend on java)
   # * libc6-compat: BoringSSL for Netty per https://github.com/grpc/grpc-java/blob/master/SECURITY.md#netty
   apk add --no-cache java-cacerts ca-certificates libc6-compat && \
-  # Force install versions that don't have CVE-2023-2975. This can be removed on future versions.
-  apk add --no-cache libcrypto3=3.1.1-r3 libssl3=3.1.1-r3 && \
   # Typically, only amd64 is tested in CI: Run a command to ensure binaries match current arch.
   ldd /lib/libz.so.1
 
