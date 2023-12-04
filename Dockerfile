@@ -1,5 +1,5 @@
 #
-# Copyright 2015-2022 The OpenZipkin Authors
+# Copyright 2015-2023 The OpenZipkin Authors
 #
 # Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
 # in compliance with the License. You may obtain a copy of the License at
@@ -29,13 +29,13 @@ COPY . /code/
 
 # See from a previously published version to avoid pulling from Docker Hub (docker.io)
 # This version is only used to install the real version
-FROM ghcr.io/openzipkin/alpine:3.16.2 as install
+FROM ghcr.io/openzipkin/alpine:3.18.5 as install
 
 WORKDIR /code
 # Conditions aren't supported in Dockerfile instructions, so we copy source even if it isn't used.
 COPY --from=code /code/ .
 
-# Alpine's minirootfs is mirrored and only 5MB. Build on demand instead of consuming docker.io pulls
+# Alpine's minirootfs is mirrored and only 5MB. wget on demand instead of consuming docker.io pulls
 WORKDIR /install
 
 ARG alpine_version
