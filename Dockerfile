@@ -73,8 +73,8 @@ RUN \
   #
   # Finalize install:
   # * java-cacerts: implicitly gets normal ca-certs used outside Java (this does not depend on java)
-  # * libc6-compat: BoringSSL for Netty per https://github.com/grpc/grpc-java/blob/master/SECURITY.md#netty
-  apk add --no-cache java-cacerts ca-certificates libc6-compat && \
+  # * gcompat: BoringSSL for Netty per https://github.com/grpc/grpc-java/blob/master/SECURITY.md#netty
+  apk add --no-cache java-cacerts ca-certificates gcompat && \
   # Typically, only amd64 is tested in CI: Run a command to ensure binaries match current arch.
   ldd /lib/libz.so.1
 
