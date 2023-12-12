@@ -2,7 +2,7 @@
 [![Build Status](https://github.com/openzipkin/docker-alpine/workflows/test/badge.svg)](https://github.com/openzipkin/docker-alpine/actions?query=workflow%3Atest)
 
 `ghcr.io/openzipkin/alpine` is a minimal [Alpine Linux](https://alpinelinux.org) image including
-CA certs and libc6-compat.
+CA certs and gcompat.
 
 GitHub Container Registry: [ghcr.io/openzipkin/alpine](https://github.com/orgs/openzipkin/packages/container/package/alpine) includes:
  * `master` tag: latest commit
