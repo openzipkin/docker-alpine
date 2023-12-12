@@ -20,7 +20,7 @@ docker run -ti --rm ghcr.io/openzipkin/alpine:3.19.0
 ## Release process
 Build the `Dockerfile` using the current version from https://alpinelinux.org/downloads/:
 ```bash
-# Note 3.19.0 not 3.18!
+# Note 3.19.0 not 3.19!
 ./build-bin/build 3.19.0
 ```
 
