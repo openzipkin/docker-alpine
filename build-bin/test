@@ -7,5 +7,5 @@ echo "Building Docker image..."
 build-bin/build
 
 echo "Verifying Docker image..."
-# Invoke a binary in libc6-compat to ensure arch matches
+# Invoke a binary in gcompat to ensure arch matches
 docker run --rm openzipkin/alpine:test -c 'ldd /lib/libz.so.1'
