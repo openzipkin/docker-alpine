@@ -16,7 +16,13 @@ on:
 
 jobs:
   test:
-    runs-on: ubuntu-22.04  # newest available distribution, aka jellyfish
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false  # sometimes failures are OS specific
+      matrix:
+        include:
+          - os: ubuntu-22.04  # newest available distribution, aka jellyfish
+          - os: macos-14  # For arm64 (via Apple Silicon)
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
