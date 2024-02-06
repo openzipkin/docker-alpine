@@ -13,22 +13,22 @@ This is an internal base layer primarily used in [docker-java](https://github.co
 
 To browse the image, run it in interactive mode with TTY enabled like so:
 ```bash
-docker run -ti --rm ghcr.io/openzipkin/alpine:3.19.0
+docker run -ti --rm ghcr.io/openzipkin/alpine:3.19.1
 / #
 ```
 
 ## Release process
 Build the `Dockerfile` using the current version from https://alpinelinux.org/downloads/:
 ```bash
-# Note 3.19.0 not 3.19!
-./build-bin/build 3.19.0
+# Note 3.19.1 not 3.19!
+./build-bin/build 3.19.1
 ```
 
 Next, verify the built image matches that version:
 ```bash
 docker run --rm openzipkin/alpine:test -c 'cat /etc/alpine-release'
-3.19.0
+3.19.1
 ```
 
-To release the image, push a tag matching the arg to `build-bin/build` (ex `3.19.0`).
+To release the image, push a tag matching the arg to `build-bin/build` (ex `3.19.1`).
 This triggers a [GitHub Actions](https://github.com/openzipkin/docker-alpine/actions) job to push the image.
