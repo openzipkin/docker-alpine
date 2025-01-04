@@ -9,7 +9,7 @@
 # When updating, update the README and the alpine_version ARG
 #  * Use current version from https://alpinelinux.org/downloads/
 #  * ARGs repeat because Dockerfile ARGs are layer specific but will reuse the value defined here.
-ARG alpine_version=3.20.3
+ARG alpine_version=3.21.0
 
 # We copy files from the context into a scratch container first to avoid a problem where docker and
 # docker-compose don't share layer hashes https://github.com/docker/compose/issues/883 normally.
@@ -20,7 +20,7 @@ COPY . /code/
 
 # See from a previously published version to avoid pulling from Docker Hub (docker.io)
 # This version is only used to install the real version
-FROM ghcr.io/openzipkin/alpine:3.20.2 AS install
+FROM ghcr.io/openzipkin/alpine:3.20.3 AS install
 
 WORKDIR /code
 # Conditions aren't supported in Dockerfile instructions, so we copy source even if it isn't used.
@@ -56,7 +56,7 @@ RUN \
   # will throw UnknownHostException as the local hostname isn't in DNS.
   echo 'hosts: files mdns4_minimal [NOTFOUND=return] dns mdns4' >> /etc/nsswitch.conf && \
   #
-  # Exclusively use edge repos to get recent packages, but avoid conflicts with 3.20
+  # Exclusively use edge repos to get recent packages, but avoid conflicts with 3.21
   echo 'https://dl-cdn.alpinelinux.org/alpine/edge/main' > /etc/apk/repositories && \
   echo 'https://dl-cdn.alpinelinux.org/alpine/edge/testing' >> /etc/apk/repositories && \
   echo 'https://dl-cdn.alpinelinux.org/alpine/edge/community' >> /etc/apk/repositories && \
@@ -66,6 +66,6 @@ RUN \
   # * gcompat: BoringSSL for Netty per https://github.com/grpc/grpc-java/blob/master/SECURITY.md#netty
   apk add --no-cache java-cacerts ca-certificates gcompat && \
   # Typically, only amd64 is tested in CI: Run a command to ensure binaries match current arch.
-  ldd /lib/libz.so.1
+  ldd /usr/lib/libz.so.1
 
 ENTRYPOINT ["/bin/sh"]
