@@ -8,4 +8,4 @@ build-bin/build
 
 echo "Verifying Docker image..."
 # Invoke a binary in gcompat to ensure arch matches
-docker run --rm openzipkin/alpine:test -c 'ldd /lib/libz.so.1'
+docker run --rm openzipkin/alpine:test -c 'ldd /usr/lib/libz.so.1'
