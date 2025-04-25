@@ -20,15 +20,15 @@ docker run -ti --rm ghcr.io/openzipkin/alpine:3.21.2
 ## Release process
 Build the `Dockerfile` using the current version from https://alpinelinux.org/downloads/:
 ```bash
-# Note 3.21.2 not 3.21!
-./build-bin/build 3.21.2
+# Note 3.21.3 not 3.21!
+./build-bin/build 3.21.3
 ```
 
 Next, verify the built image matches that version:
 ```bash
 docker run --rm openzipkin/alpine:test -c 'cat /etc/alpine-release'
-3.21.2
+3.21.3
 ```
 
-To release the image, push a tag matching the arg to `build-bin/build` (ex `3.21.2`).
+To release the image, push a tag matching the arg to `build-bin/build` (ex `3.21.3`).
 This triggers a [GitHub Actions](https://github.com/openzipkin/docker-alpine/actions) job to push the image.
