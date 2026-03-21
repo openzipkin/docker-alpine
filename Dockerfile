@@ -9,18 +9,18 @@
 # When updating, update the README and the alpine_version ARG
 #  * Use current version from https://alpinelinux.org/downloads/
 #  * ARGs repeat because Dockerfile ARGs are layer specific but will reuse the value defined here.
-ARG alpine_version=3.21.3
+ARG alpine_version=3.23.3
 
 # We copy files from the context into a scratch container first to avoid a problem where docker and
 # docker-compose don't share layer hashes https://github.com/docker/compose/issues/883 normally.
 # COPY --from= works around the issue.
 FROM scratch AS code
 
-COPY . /code/
+COPY alpine_minirootfs /code/
 
 # See from a previously published version to avoid pulling from Docker Hub (docker.io)
 # This version is only used to install the real version
-FROM ghcr.io/openzipkin/alpine:3.20.3 AS install
+FROM ghcr.io/openzipkin/alpine:3.21.3 AS install
 
 WORKDIR /code
 # Conditions aren't supported in Dockerfile instructions, so we copy source even if it isn't used.
