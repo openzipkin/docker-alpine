@@ -34,6 +34,6 @@ fi
 # See https://github.com/tonistiigi/binfmt
 #
 # Mirrored image use to avoid docker.io pulls:
-# docker tag tonistiigi/binfmt:qemu-v10.2.1-65 ghcr.io/openzipkin/tonistiigi-binfmt-qemu:latest
+# docker buildx imagetools create --tag ghcr.io/openzipkin/tonistiigi-binfmt-qemu:latest tonistiigi/binfmt:qemu-v10.2.1-65
 #
 docker run --privileged --rm ghcr.io/openzipkin/tonistiigi-binfmt-qemu --install all
